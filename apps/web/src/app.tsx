@@ -27,6 +27,7 @@ function App() {
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>Postcode</Table.HeadCell>
             <Table.HeadCell>Watt Capacity</Table.HeadCell>
+            <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body>
             {batteries?.map((battery) => (
@@ -34,6 +35,9 @@ function App() {
                 <Table.Cell>{battery.name}</Table.Cell>
                 <Table.Cell>{battery.postcode}</Table.Cell>
                 <Table.Cell>{battery.wattCapacity}</Table.Cell>
+                <Table.Cell>
+                  <Button onClick={() => {}}>Delete</Button>
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
