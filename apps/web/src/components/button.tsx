@@ -1,13 +1,27 @@
-import { Button as FlowbiteButton } from "flowbite-react";
+import {
+  Button as FlowbiteButton,
+  ButtonProps as FlowbiteButtonProps,
+  Spinner,
+} from "flowbite-react";
 
-interface ButtonProps {
+interface ButtonProps extends FlowbiteButtonProps {
+  isLoading?: boolean;
   children: React.ReactNode;
   onClick: () => void;
 }
 const Button = (props: ButtonProps) => {
-  const { children, onClick } = props;
+  const { children, isLoading, onClick, ...rest } = props;
 
-  return <FlowbiteButton onClick={onClick}>{children}</FlowbiteButton>;
+  return (
+    <FlowbiteButton
+      {...rest}
+      onClick={onClick}
+      disabled={isLoading || rest.disabled}
+    >
+      {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
+      {children}
+    </FlowbiteButton>
+  );
 };
 
 export default Button;

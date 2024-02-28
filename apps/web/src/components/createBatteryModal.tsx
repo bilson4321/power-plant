@@ -37,40 +37,49 @@ const CreateBatteryModal = (props: CreateBatteryModalProps) => {
 
   return (
     <Modal show={show} onClose={onClose} title="Create Battery">
-      <div className="p-2">
-        <div className="flex flex-col j">
-          <div className="title">Create Battery</div>
-          <div className="p-2">
-            <TextInput
-              type="text"
-              placeholder="Name"
-              onChange={(e) =>
-                setBattery((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
+      <Modal.Header>
+        <div className="title">Create Battery</div>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="p-2">
+          <div className="flex flex-col">
+            <div className="p-2">
+              <TextInput
+                type="text"
+                placeholder="Name"
+                onChange={(e) =>
+                  setBattery((prev) => ({ ...prev, name: e.target.value }))
+                }
+              />
+            </div>
+            <div className="p-2">
+              <TextInput
+                type="text"
+                placeholder="Postcode"
+                onChange={(e) =>
+                  setBattery((prev) => ({ ...prev, postcode: e.target.value }))
+                }
+              />
+            </div>
+            <div className="p-2">
+              <TextInput
+                type="number"
+                placeholder="Watt Capacity"
+                onChange={(e) =>
+                  setBattery((prev) => ({
+                    ...prev,
+                    wattCapacity: +e.target.value,
+                  }))
+                }
+              />
+            </div>
           </div>
-          <div className="p-2">
-            <TextInput
-              type="text"
-              placeholder="Postcode"
-              onChange={(e) =>
-                setBattery((prev) => ({ ...prev, postcode: e.target.value }))
-              }
-            />
-          </div>
-          <div className="p-2">
-            <TextInput
-              type="number"
-              placeholder="Watt Capacity"
-              onChange={(e) =>
-                setBattery((prev) => ({
-                  ...prev,
-                  wattCapacity: +e.target.value,
-                }))
-              }
-            />
-          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <div className="flex flex-row justify-between w-full">
           <Button
+            isLoading={isMutating}
             onClick={async () => {
               if (!battery) return;
               await trigger(battery);
@@ -79,8 +88,11 @@ const CreateBatteryModal = (props: CreateBatteryModalProps) => {
           >
             Create Battery
           </Button>
+          <Button outline onClick={onClose}>
+            Cancel
+          </Button>
         </div>
-      </div>
+      </Modal.Footer>
     </Modal>
   );
 };

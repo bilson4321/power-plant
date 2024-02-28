@@ -17,7 +17,8 @@ router.post("/", async (req: Request, res: Response) => {
 // Get a battery by ID
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const battery = await BatteryModel.findById(req.params.id);
+    const { id } = req.params;
+    const battery = await BatteryModel.findById(id);
     if (!battery) {
       return res.status(404).json({ error: "Battery not found" });
     }
@@ -28,13 +29,52 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 // Get all batteries
-router.get("/", async (req: Request, res: Response) => {
-  try {
-    const batteries = await BatteryModel.find();
-    res.json(batteries);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to get batteries" });
+router.get(
+  "/",
+  async (
+    req: Request<{
+      searchQuery?: string;
+      lt?: string;
+      st?: string;
+      skip?: string;
+      limit?: string;
+    }>,
+    res: Response
+  ) => {
+    try {
+      const { searchQuery, lt, st, skip, limit } = req.query;
+
+      const parsedSkip = parseInt(skip as string) || 0;
+      const parsedLimit = parseInt(limit as string) || 10;
+
+      const dynamicQuery = {
+        ...(searchQuery && { name: { $regex: searchQuery, $options: "i" } }),
+        ...((lt || st) && {
+          postcode: {
+            ...(lt && { $gt: lt }),
+            ...(st && { $lt: st }),
+          },
+        }),
+      };
+      const batteries = await BatteryModel.find(dynamicQuery)
+        .sort({
+          name: 1,
+        })
+        .skip(parsedSkip)
+        .limit(parsedLimit)
+        .exec();
+
+      res.json({
+        data: batteries,
+        meta: {
+          total: await BatteryModel.countDocuments(dynamicQuery).exec(),
+          skip: parsedSkip,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get batteries" });
+    }
   }
-});
+);
 
 export default router;
