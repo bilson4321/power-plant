@@ -1,12 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDotEnv": [".env"],
   "pipeline": {
     "build": {
+      "dotEnv": [".env"],
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "lint": {},
     "dev": {
+      "dotEnv": [".env.development"],
       "cache": false,
       "persistent": true
     }

@@ -1,4 +1,14 @@
 {
   "extends": "@repo/typescript-config/vite.json",
-  "include": ["src"]
+  "include": ["src"],
+
+  "compilerOptions": {
+    /* Bundler mode */
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "noFallthroughCasesInSwitch": true
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
