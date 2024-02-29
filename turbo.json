@@ -9,7 +9,7 @@
     },
     "lint": {},
     "dev": {
-      "dotEnv": [".env.development"],
+      "dotEnv": [".env.local"],
       "cache": false,
       "persistent": true
     }
