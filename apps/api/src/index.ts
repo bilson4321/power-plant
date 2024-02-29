@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import routes from "./routes";
 
 const app = express();
-const port = 8000;
+const port = process.env.SERVER_PORT ?? 8000;
 
 mongoose.connect(process.env.MONGODB_URL ?? "", {});
 const database = mongoose.connection;
